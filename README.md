@@ -4,7 +4,9 @@ A logistic regression implementation from scratch for multi-class classification
 
 ## Mathematical Foundation
 
-This project implements **multinomial logistic regression** using the One-vs-All (OvA) strategy:
+### Logistic Regression
+
+Logistic regression models the probability that an instance belongs to a particular class using the sigmoid function.
 
 **Sigmoid Function:**
 ```
@@ -14,22 +16,38 @@ This project implements **multinomial logistic regression** using the One-vs-All
 **Hypothesis:**
 ```
 h_θ(x) = σ(θ^T x)
+where z = θ^T x = θ₀ + θ₁x₁ + θ₂x₂ + ... + θₙxₙ
 ```
 
-**Gradient:**
+**Cost Function (Log Loss):**
+```
+J(θ) = -(1/m) Σ[y·log(h_θ(x)) + (1-y)·log(1-h_θ(x))]
+```
+
+**Gradient of Cost Function:**
 ```
 ∇J(θ) = (1/m) X^T (h_θ(x) - y)
 ```
 
-**Parameter Update:**
+**Gradient Descent Update:**
 ```
 θ := θ - α∇J(θ)
+```
+
+### One-vs-All Strategy
+
+For multi-class classification (4 Hogwarts houses), we train **4 separate binary classifiers**:
+- Each classifier learns to distinguish one house from all others
+- For prediction, we run all 4 classifiers and select the house with highest probability:
+```
+predicted_house = argmax(h_θ^(i)(x)) for i ∈ {Gryffindor, Slytherin, Ravenclaw, Hufflepuff}
 ```
 
 Where:
 - `m` is the number of training examples
 - `α` is the learning rate (0.001)
 - `θ` are the model parameters (weights)
+- `y ∈ {0,1}` for binary classification per house
 
 ## Project Structure
 
